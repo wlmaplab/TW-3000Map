@@ -19,7 +19,7 @@ class HelpViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     let siteURLs = ["https://3000.gov.tw/",
                     "https://data.gov.tw/dataset/127751",
-                    ""]
+                    "https://github.com/wlmaplab/TW-3000Map"]
     
     
     // MARK: - viewLoad
