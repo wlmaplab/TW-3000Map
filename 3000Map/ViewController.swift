@@ -31,6 +31,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var opendPostDetailsStoreCd : String = ""
     
     
+    
+    // MARK: - Object
+    
+    deinit {
+         NotificationCenter.default.removeObserver(self)
+    }
+    
+    
     // MARK: - viewLoad
     
     override func viewDidLoad() {
@@ -57,6 +65,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         setupMyLocation()
         moveToSiteLocation()
         mapView.showsUserLocation = true
+        
+        // setup Notification
+        setupNotificationCenter()
     }
     
     func setupRightButtonItem() {
@@ -98,6 +109,37 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // init myLocation
         myLocation.latitude = siteCoordinate.latitude
         myLocation.longitude = siteCoordinate.longitude
+    }
+    
+    
+    // MARK: - Notification
+    
+    func setupNotificationCenter() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didEnterBackground),
+                                               name: UIScene.didEnterBackgroundNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(willEnterForeground),
+                                               name: UIScene.willEnterForegroundNotification,
+                                               object: nil)
+    }
+    
+    @objc func didEnterBackground() {
+        print("app: didEnterBackground")
+        if let timer = checkTimer {
+            timer.invalidate()
+            checkTimer = nil
+        }
+    }
+    
+    @objc func willEnterForeground() {
+        print("app: willEnterForeground")
+        if checkTimer == nil {
+            print("checkTimer is nil => StartUp Timer.")
+            checkTimerStartUp()
+        }
     }
     
     
