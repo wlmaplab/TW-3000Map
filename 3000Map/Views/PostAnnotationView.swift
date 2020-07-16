@@ -22,7 +22,7 @@ class PostAnnotationView: MKAnnotationView {
     var tel        = ""                      //電話
     var busiTime   = ""                      //營業時間
     var busiMemo   = ""                      //營業備註
-    var total      = ""                      //存量
+    var total      = ""                      //服務存量
     var updateTime = ""                      //異動時間
     
     var selectedAction : ((_ coordinate: CLLocationCoordinate2D) -> Void)?
@@ -119,7 +119,7 @@ class PostAnnotationView: MKAnnotationView {
                                  value: vouchersStyle,
                                  range: infoText.range(of: vouchers))
             attrStr.addAttribute(.font,
-                                 value: UIFont.boldSystemFont(ofSize: 24),
+                                 value: UIFont.boldSystemFont(ofSize: 23),
                                  range: infoText.range(of: vouchers))
             
             let totalFontColor = LevelsColor.fontColorWith(total: Int(total) ?? 0)
