@@ -93,10 +93,10 @@ class PostAnnotationView: MKAnnotationView {
             textView.isSelectable = false
             textView.backgroundColor = .clear //.lightGray
             
-            let vouchers = "三倍券存量：\(total)"
+            let totalText = "\(total) 份"
+            let vouchers = "三倍券尚有: \(totalText)"
             let infoText = "\(vouchers)\n\(storeNm)\n\(addr)\n" as NSString
             let attrStr = NSMutableAttributedString(string: infoText as String)
-            
             
             // infoText attribute
             let style = NSMutableParagraphStyle()
@@ -125,7 +125,7 @@ class PostAnnotationView: MKAnnotationView {
             let totalFontColor = LevelsColor.fontColorWith(total: Int(total) ?? 0)
             attrStr.addAttribute(.foregroundColor,
                                  value: totalFontColor,
-                                 range: infoText.range(of: total))
+                                 range: infoText.range(of: totalText))
             
             // 分局名稱 attribute
             let storeNmStyle = NSMutableParagraphStyle()

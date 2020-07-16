@@ -20,7 +20,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     var info : Dictionary<String,String>?
     var closeAction : (() -> Void)?
     
-    private let titles    = [ "三倍券存量", "分局名稱", "門市地址", "電話", "營業時間",  "營業備註",  "異動時間" ]
+    private let titles    = [ "本日三倍券尚有", "分局名稱", "門市地址", "電話", "營業時間",  "營業備註",  "異動時間" ]
     private let itemKeys  = [ "total",    "storeNm", "addr",   "tel", "busiTime", "busiMemo", "updateTime" ]
     
     
@@ -91,7 +91,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - To AttributedString
     
     func totalStringToAttributedString(title: String, total: String) -> NSAttributedString {
-        let textStr = "\(title)\(total)" as NSString
+        let textStr = "\(title) \(total) 份" as NSString
         let attrStr = NSMutableAttributedString(string: textStr as String)
         let totalFontColor = LevelsColor.fontColorWith(total: Int(total) ?? 0)
         
@@ -191,7 +191,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             switch indexPath.row {
             case 0:
                 //三倍券存量
-                cell.textLabel?.attributedText = totalStringToAttributedString(title: "\(title)：", total: content)
+                cell.textLabel?.attributedText = totalStringToAttributedString(title: title, total: content)
             case 1, 2, 3, 6:
                 //分局名稱、門市地址、電話、異動時間
                 cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：", content: content)

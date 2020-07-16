@@ -60,7 +60,7 @@ class LevelsColor {
             // #0072e3 => Blue
             return UIColor(red: 0, green: 114/255.0, blue: 227/255.0, alpha: 1)
         default:
-            return UIColor.white
+            return UIColor.lightGray
         }
     }
     
