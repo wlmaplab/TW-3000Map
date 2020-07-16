@@ -119,7 +119,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                              range: NSRange(location: 0, length: textStr.length))
         
         attrStr.addAttribute(.font,
-                             value: UIFont.systemFont(ofSize: 16),
+                             value: UIFont.systemFont(ofSize: 17),
                              range: NSRange(location: 0, length: textStr.length))
         
         attrStr.addAttribute(.font,
