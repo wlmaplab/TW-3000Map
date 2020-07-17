@@ -137,6 +137,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @objc func willEnterForeground() {
         print("app: willEnterForeground")
         if checkTimer == nil {
+            if isRefreshMapData() {
+                print("Download and refresh MapData...")
+                fetchData(showMessage: "刷新資料中...")
+            }
             print("checkTimer is nil => StartUp Timer.")
             checkTimerStartUp()
         }
