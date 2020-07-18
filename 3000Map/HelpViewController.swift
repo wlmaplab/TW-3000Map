@@ -14,7 +14,7 @@ class HelpViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var tableView : UITableView!
     
     let sites    = ["行政院振興三倍券 - 官網",
-                    "郵局振興三倍券存量 - 開放資料集",
+                    "郵局三倍券即時領券量 - 開放資料集",
                     "本 App 的程式原始碼"]
     
     let siteURLs = ["https://3000.gov.tw/",
