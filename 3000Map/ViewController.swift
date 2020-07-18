@@ -93,10 +93,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func setupMyLocationButton() {
+        myLocationButton.titleLabel?.numberOfLines = 2
+        myLocationButton.setTitle("定\n位", for: .normal)
+        
         myLocationButton.layer.shadowColor = UIColor.lightGray.cgColor
         myLocationButton.layer.shadowOffset = CGSize(width: 1, height: 3)
         myLocationButton.layer.shadowOpacity = 1.0
-        myLocationButton.layer.cornerRadius = myLocationButton.frame.size.width / 2
+        myLocationButton.layer.cornerRadius = 10
     }
     
     func setupLocationManager() {

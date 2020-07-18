@@ -22,20 +22,20 @@
                                 </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ge-8F-eFN">
-                                <rect key="frame" x="358" y="738" width="44" height="44"/>
+                                <rect key="frame" x="362" y="712" width="40" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="44" id="if2-fZ-6rx"/>
-                                    <constraint firstAttribute="height" constant="44" id="j8k-E7-shO"/>
+                                    <constraint firstAttribute="width" constant="40" id="if2-fZ-6rx"/>
+                                    <constraint firstAttribute="height" constant="64" id="j8k-E7-shO"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="🧭"/>
                                 <connections>
                                     <action selector="pressedMyLocationButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="9XY-TD-npy"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="level_bar.png" translatesAutoresizingMaskIntoConstraints="NO" id="bCk-gJ-JV9">
-                                <rect key="frame" x="57" y="785" width="300" height="47"/>
+                                <rect key="frame" x="57" y="786" width="300" height="47"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="HNy-Za-peo"/>
                                     <constraint firstAttribute="height" constant="47" id="gMe-H5-g5l"/>
@@ -64,13 +64,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="AeZ-Yb-Bx2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="5KB-2d-O8S"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6ge-8F-eFN" secondAttribute="bottom" constant="86" id="Fp2-Kl-FNl"/>
                             <constraint firstItem="Jq5-hj-cO3" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Mo0-zZ-zFM"/>
                             <constraint firstItem="Jq5-hj-cO3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="QTS-9S-uRw"/>
                             <constraint firstItem="Jq5-hj-cO3" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="SC8-A4-HL3"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6ge-8F-eFN" secondAttribute="bottom" constant="80" id="Y2R-Do-Im5"/>
                             <constraint firstItem="Jq5-hj-cO3" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="hD6-JW-pCX"/>
                             <constraint firstItem="bCk-gJ-JV9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hFs-aE-OO7"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bCk-gJ-JV9" secondAttribute="bottom" constant="30" id="iAy-gh-6VU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bCk-gJ-JV9" secondAttribute="bottom" constant="29" id="iAy-gh-6VU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6ge-8F-eFN" secondAttribute="trailing" constant="12" id="qqV-r8-lJr"/>
                             <constraint firstItem="AeZ-Yb-Bx2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="s4H-Eo-Ftr"/>
                             <constraint firstItem="AeZ-Yb-Bx2" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="xJe-cS-o6w"/>
