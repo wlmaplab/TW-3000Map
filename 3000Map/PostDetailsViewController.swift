@@ -14,9 +14,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet var closeButton : UIButton!
     @IBOutlet var tableView : UITableView!
     
-    var postCoordinate = CLLocationCoordinate2D()
-    var userCoordinate = CLLocationCoordinate2D()
-    
+    var postCoordinate = CLLocationCoordinate2D()    
     var info : Dictionary<String,String>?
     var closeAction : (() -> Void)?
     
@@ -219,6 +217,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
+            let userCoordinate = AppVariables.myLocation()
             if userCoordinate.latitude == 0 || userCoordinate.longitude == 0 {
                 msgBox(title: "Error 訊息：", message: "無法確認當前位置，所以無法進行導航！")
                 return

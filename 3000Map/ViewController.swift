@@ -400,7 +400,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func showMoreInfo(_ info: Dictionary<String,String>, coordinate: CLLocationCoordinate2D) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
-        vc.userCoordinate = AppVariables.myLocation()
         vc.info = info
         opendPostDetailsStoreCd = info["storeCd"] ?? ""
         
@@ -430,7 +429,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @objc func pressedNearbyButtonItem() {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NearbyPostsVC") as! NearbyPostsViewController
-        vc.myLocation = AppVariables.myLocation()
         show(vc, sender: self)
     }
     
