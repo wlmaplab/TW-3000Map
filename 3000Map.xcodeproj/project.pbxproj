@@ -46,6 +46,7 @@
 		42367A6624BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42367A6524BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift */; };
 		42367A6824BB3BF10048CD67 /* SettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42367A6724BB3BF10048CD67 /* SettingsHelper.swift */; };
 		425B83DE24C3F76300E95FCE /* NearbyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B83DD24C3F76300E95FCE /* NearbyPostsViewController.swift */; };
+		425B83E024C4778A00E95FCE /* AppVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B83DF24C4778A00E95FCE /* AppVariables.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		42367A6524BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseUpdateIntervalViewController.swift; sourceTree = "<group>"; };
 		42367A6724BB3BF10048CD67 /* SettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHelper.swift; sourceTree = "<group>"; };
 		425B83DD24C3F76300E95FCE /* NearbyPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyPostsViewController.swift; sourceTree = "<group>"; };
+		425B83DF24C4778A00E95FCE /* AppVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariables.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 				42367A1424ACCC300048CD67 /* APIHelper.swift */,
 				42367A3924B5D9D60048CD67 /* LevelsColor.swift */,
 				42367A6724BB3BF10048CD67 /* SettingsHelper.swift */,
+				425B83DF24C4778A00E95FCE /* AppVariables.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				425B83E024C4778A00E95FCE /* AppVariables.swift in Sources */,
 				42367A1524ACCC300048CD67 /* APIHelper.swift in Sources */,
 				42367A0124ACBBDE0048CD67 /* ViewController.swift in Sources */,
 				42367A3824B5749C0048CD67 /* PostDetailsViewController.swift in Sources */,
