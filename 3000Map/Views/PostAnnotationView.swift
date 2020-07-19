@@ -147,6 +147,11 @@ class PostAnnotationView: MKAnnotationView {
             textView.attributedText = attrStr;
             bgView.addSubview(textView)
             
+            let textViewTap = UITapGestureRecognizer(target: self, action: #selector(clickShowMore))
+            textView.addGestureRecognizer(textViewTap)
+            
+            
+            // showMoreLabel
             let showMoreLabel = UILabel(frame: CGRect(x: (xOffset + 6),
                                                       y: (textView.frame.size.height + yOffset),
                                                       width: (bgView.frame.size.width - ((xOffset + 6) * 2) ),
