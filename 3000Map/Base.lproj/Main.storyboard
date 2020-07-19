@@ -50,12 +50,21 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="EUn-eh-GDW">
+                                        <rect key="frame" x="20" y="8" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="OOr-IE-EG2"/>
+                                            <constraint firstAttribute="height" constant="20" id="ZyD-Eb-ULd"/>
+                                        </constraints>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstItem="EUn-eh-GDW" firstAttribute="leading" secondItem="AeZ-Yb-Bx2" secondAttribute="leading" constant="20" id="8XF-UK-oGW"/>
                                     <constraint firstAttribute="trailing" secondItem="IPh-Ik-meQ" secondAttribute="trailing" constant="8" id="BGw-vD-Cf3"/>
                                     <constraint firstAttribute="height" constant="36" id="EPJ-V0-cdd"/>
                                     <constraint firstAttribute="bottom" secondItem="IPh-Ik-meQ" secondAttribute="bottom" id="Lay-Iz-nEF"/>
+                                    <constraint firstItem="EUn-eh-GDW" firstAttribute="centerY" secondItem="AeZ-Yb-Bx2" secondAttribute="centerY" id="Za7-GF-0Mx"/>
                                     <constraint firstItem="IPh-Ik-meQ" firstAttribute="top" secondItem="AeZ-Yb-Bx2" secondAttribute="top" id="ge1-44-okf"/>
                                     <constraint firstItem="IPh-Ik-meQ" firstAttribute="leading" secondItem="AeZ-Yb-Bx2" secondAttribute="leading" constant="8" id="l7V-4E-s7j"/>
                                 </constraints>
@@ -79,6 +88,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="cee-Dz-tog"/>
                     <connections>
+                        <outlet property="indicatorView" destination="EUn-eh-GDW" id="5ym-Pp-8t6"/>
                         <outlet property="mapView" destination="Jq5-hj-cO3" id="Ea9-5j-Jqm"/>
                         <outlet property="messageLabel" destination="IPh-Ik-meQ" id="iPe-S6-9JR"/>
                         <outlet property="messageView" destination="AeZ-Yb-Bx2" id="v0K-Q2-rae"/>

@@ -16,8 +16,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet var myLocationButton : UIButton!
     @IBOutlet var messageView : UIView!
     @IBOutlet var messageLabel : UILabel!
+    @IBOutlet var indicatorView : UIActivityIndicatorView!
     
-    let indicatorView = UIActivityIndicatorView(style: .medium)
+    
     let locationManager = CLLocationManager()
     let siteCoordinate = CLLocationCoordinate2D(latitude: 22.996787, longitude: 120.2114242) //台南火車站前站
     var myLocation = CLLocationCoordinate2D()
@@ -57,7 +58,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // setup UI
         setupLeftButtonItem()
         setupRightButtonItem()
-        setupMessageView()
+        setupIndicatorAndMessageView()
         setupMyLocationButton()
         
         // setup Location
@@ -77,12 +78,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func setupLeftButtonItem() {
-        indicatorView.color = .systemBlue
-        indicatorView.stopAnimating()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: indicatorView)
+        
     }
     
-    func setupMessageView() {
+    func setupIndicatorAndMessageView() {
+        indicatorView.color = .white
+        indicatorView.stopAnimating()
+        
         messageView.backgroundColor = .systemBlue
         messageLabel.backgroundColor = .clear
         messageLabel.textColor = .white
@@ -440,10 +442,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func messageViewShow(message: String) {
-        if message == "" {
-            return
-        }
-        
         UIView.animate(withDuration: 0.15) {
             self.messageView.alpha = 0.8
             self.messageLabel.text = message
