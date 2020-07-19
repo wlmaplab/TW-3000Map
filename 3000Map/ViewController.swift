@@ -21,15 +21,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     let locationManager = CLLocationManager()
     let siteCoordinate = CLLocationCoordinate2D(latitude: 22.996787, longitude: 120.2114242) //台南火車站前站
-    var myLocation = CLLocationCoordinate2D()
-    var isMoveToUserLocation = true
     
+    var isMoveToUserLocation = true
     var lastUpdatedDate : Date?
     var checkTimer : Timer?
     
     var postAnnotationArray = Array<PostAnnotation>()
     var opendPostDetailsStoreCd : String = ""
-    
     
     
     // MARK: - Object
@@ -38,7 +36,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
          NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - items
+    // MARK: - items and myLocation
      
     func items() -> Array<Dictionary<String,Any>>? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -48,6 +46,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func setItems(_ items: Array<Dictionary<String,Any>>?) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.postItems = items
+    }
+    
+    func myLocation() -> CLLocationCoordinate2D {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.myLocation
+    }
+    
+    func setMyLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.myLocation.latitude = latitude
+        appDelegate.myLocation.longitude = longitude
     }
     
     
@@ -118,8 +127,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func setupMyLocation() {
         // init myLocation
-        myLocation.latitude = siteCoordinate.latitude
-        myLocation.longitude = siteCoordinate.longitude
+        setMyLocation(latitude: siteCoordinate.latitude, longitude: siteCoordinate.longitude)
     }
     
     
@@ -333,13 +341,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         if let location = userLocation.location {
-            myLocation.latitude = location.coordinate.latitude
-            myLocation.longitude = location.coordinate.longitude
-            print("緯度：\(myLocation.latitude)，經度：\(myLocation.longitude)")
+            setMyLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            print("緯度：\(myLocation().latitude)，經度：\(myLocation().longitude)")
             
             if isMoveToUserLocation == true {
                 isMoveToUserLocation = false
-                let viewRegion = MKCoordinateRegion(center: myLocation, latitudinalMeters: 1200, longitudinalMeters: 1200)
+                let viewRegion = MKCoordinateRegion(center: myLocation(), latitudinalMeters: 1200, longitudinalMeters: 1200)
                 let adjustedRegion = mapView.regionThatFits(viewRegion)
                 mapView.setRegion(adjustedRegion, animated: true)
                 showNearbyButtonItem()
@@ -411,7 +418,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func showMoreInfo(_ info: Dictionary<String,String>, coordinate: CLLocationCoordinate2D) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
-        vc.userCoordinate = myLocation
+        vc.userCoordinate = myLocation()
         vc.info = info
         opendPostDetailsStoreCd = info["storeCd"] ?? ""
         
@@ -426,8 +433,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     // MARK: - IBAction or Click Button Event
     
     @IBAction func pressedMyLocationButton() {
-        if myLocation.latitude != 0 && myLocation.longitude != 0 {
-            let viewRegion = MKCoordinateRegion(center: myLocation, latitudinalMeters: 1200, longitudinalMeters: 1200)
+        let location = myLocation()
+        if location.latitude != 0 && location.longitude != 0 {
+            let viewRegion = MKCoordinateRegion(center: location, latitudinalMeters: 1200, longitudinalMeters: 1200)
             let adjustedRegion = mapView.regionThatFits(viewRegion)
             mapView.setRegion(adjustedRegion, animated: true)
         }
@@ -440,7 +448,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @objc func pressedNearbyButtonItem() {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NearbyPostsVC") as! NearbyPostsViewController
-        vc.myLocation = myLocation
+        vc.myLocation = myLocation()
         show(vc, sender: self)
     }
     
