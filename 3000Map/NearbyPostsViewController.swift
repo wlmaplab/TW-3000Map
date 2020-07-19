@@ -192,19 +192,13 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = nearbyItems[indexPath.row]
-        let coordinate = post.coordinate
-        
-        var info = Dictionary<String,String>()
-        for (key, value) in post.info {
-            info[key] = (value as? String) ?? ""
-        }
-        showMoreInfo(info, coordinate: coordinate)
+        showMoreInfo(post.info, coordinate: post.coordinate)
     }
     
     
     // MARK: - Show More Info
     
-    func showMoreInfo(_ info: Dictionary<String,String>, coordinate: CLLocationCoordinate2D) {
+    func showMoreInfo(_ info: Dictionary<String,Any>, coordinate: CLLocationCoordinate2D) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
         vc.info = info

@@ -15,7 +15,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet var tableView : UITableView!
     
     var postCoordinate = CLLocationCoordinate2D()    
-    var info : Dictionary<String,String>?
+    var info : Dictionary<String,Any>?
     var closeAction : (() -> Void)?
     
     private let titles    = [ "本日三倍券尚有", "分局名稱", "門市地址", "電話", "營業時間",  "營業備註",  "異動時間" ]
@@ -69,11 +69,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     @objc func refreshInfo(notification: NSNotification) {
         if let postInfo = notification.userInfo?["postInfo"] as? Dictionary<String,Any> {
-            var dict = Dictionary<String,String>()
-            for (key, value) in postInfo {
-                dict[key] = (value as? String) ?? ""
-            }
-            self.info = dict
+            self.info = postInfo
             self.tableView.reloadData()
         }
     }
@@ -184,7 +180,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             
             let title   = titles[indexPath.row]
             let key     = itemKeys[indexPath.row]
-            let content = info?[key] ?? ""
+            let content = (info?[key] as? String) ?? ""
             
             switch indexPath.row {
             case 0:
@@ -230,7 +226,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             let postMapItem = MKMapItem(placemark: postPlacemark)
             
             userMapItem.name = "現在位置"
-            postMapItem.name = info?["storeNm"] ?? "郵局"
+            postMapItem.name = (info?["storeNm"] as? String) ?? "郵局"
             
             MKMapItem.openMaps(with: [userMapItem, postMapItem],
                                launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
