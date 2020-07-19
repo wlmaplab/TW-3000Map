@@ -27,7 +27,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var lastUpdatedDate : Date?
     var checkTimer : Timer?
     
-    var items : Array<Dictionary<String,Any>>?
     var postAnnotationArray = Array<PostAnnotation>()
     var opendPostDetailsStoreCd : String = ""
     
@@ -37,6 +36,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     deinit {
          NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - items
+     
+    func items() -> Array<Dictionary<String,Any>>? {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.postItems
+    }
+    
+    func setItems(_ items: Array<Dictionary<String,Any>>?) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.postItems = items
     }
     
     
@@ -56,7 +67,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.title = "三倍券郵局地圖"
         
         // setup UI
-        setupLeftButtonItem()
         setupRightButtonItem()
         setupIndicatorAndMessageView()
         setupMyLocationButton()
@@ -75,10 +85,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let button = UIButton(type: .infoLight)
         button.addTarget(self, action: #selector(pressedInfoButtonItem), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
-    }
-    
-    func setupLeftButtonItem() {
-        
     }
     
     func setupIndicatorAndMessageView() {
@@ -194,7 +200,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             if let array = jsonArray {
                 //print(array)
                 print("\ndata count: \(array.count)")
-                self.items = array
+                self.setItems(array)
                 self.showMarkers()
                 
                 if self.opendPostDetailsStoreCd != "" {
@@ -223,7 +229,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             return nil
         }
         
-        if let items = self.items {
+        if let items = self.items() {
             for item in items {
                 if let itemStoreCd = item["storeCd"] as? String, itemStoreCd == storeCd {
                     return item
@@ -246,7 +252,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func showMarkers() {
-        if let items = self.items {
+        if let items = self.items() {
             var tmpArray = Array<PostAnnotation>()
             
             for item in items {
@@ -316,6 +322,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     
+    // MARK: - Show NearbyButtonItem (LeftButtonItem)
+    
+    func showNearbyButtonItem() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "附近...", style: .done, target: self, action: #selector(pressedNearbyButtonItem))
+    }
+    
+    
     // MARK: - MKMapViewDelegate
 
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
@@ -326,9 +339,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             
             if isMoveToUserLocation == true {
                 isMoveToUserLocation = false
-                let viewRegion = MKCoordinateRegion(center: myLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
+                let viewRegion = MKCoordinateRegion(center: myLocation, latitudinalMeters: 1200, longitudinalMeters: 1200)
                 let adjustedRegion = mapView.regionThatFits(viewRegion)
                 mapView.setRegion(adjustedRegion, animated: true)
+                showNearbyButtonItem()
             }
         }
     }
@@ -413,7 +427,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @IBAction func pressedMyLocationButton() {
         if myLocation.latitude != 0 && myLocation.longitude != 0 {
-            let viewRegion = MKCoordinateRegion(center: myLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            let viewRegion = MKCoordinateRegion(center: myLocation, latitudinalMeters: 1200, longitudinalMeters: 1200)
             let adjustedRegion = mapView.regionThatFits(viewRegion)
             mapView.setRegion(adjustedRegion, animated: true)
         }
@@ -421,6 +435,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @objc func pressedInfoButtonItem() {
         let vc = storyboard?.instantiateViewController(withIdentifier: "HelpVC") as! HelpViewController
+        show(vc, sender: self)
+    }
+    
+    @objc func pressedNearbyButtonItem() {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "NearbyPostsVC") as! NearbyPostsViewController
+        vc.myLocation = myLocation
         show(vc, sender: self)
     }
     

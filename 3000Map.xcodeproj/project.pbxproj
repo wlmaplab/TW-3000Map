@@ -45,6 +45,7 @@
 		42367A6424B9CE3D0048CD67 /* post_pin_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42367A6124B9CE3D0048CD67 /* post_pin_blue@3x.png */; };
 		42367A6624BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42367A6524BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift */; };
 		42367A6824BB3BF10048CD67 /* SettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42367A6724BB3BF10048CD67 /* SettingsHelper.swift */; };
+		425B83DE24C3F76300E95FCE /* NearbyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B83DD24C3F76300E95FCE /* NearbyPostsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		42367A6124B9CE3D0048CD67 /* post_pin_blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "post_pin_blue@3x.png"; sourceTree = "<group>"; };
 		42367A6524BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseUpdateIntervalViewController.swift; sourceTree = "<group>"; };
 		42367A6724BB3BF10048CD67 /* SettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHelper.swift; sourceTree = "<group>"; };
+		425B83DD24C3F76300E95FCE /* NearbyPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyPostsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				423679FE24ACBBDE0048CD67 /* SceneDelegate.swift */,
 				42367A6524BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift */,
 				42367A3D24B724800048CD67 /* HelpViewController.swift */,
+				425B83DD24C3F76300E95FCE /* NearbyPostsViewController.swift */,
 				42367A3724B5749C0048CD67 /* PostDetailsViewController.swift */,
 				42367A0024ACBBDE0048CD67 /* ViewController.swift */,
 				42367A0224ACBBDE0048CD67 /* Main.storyboard */,
@@ -297,6 +300,7 @@
 				42367A3E24B724800048CD67 /* HelpViewController.swift in Sources */,
 				42367A6624BAD9F30048CD67 /* ChooseUpdateIntervalViewController.swift in Sources */,
 				42367A2324B0BC040048CD67 /* PostAnnotationView.swift in Sources */,
+				425B83DE24C3F76300E95FCE /* NearbyPostsViewController.swift in Sources */,
 				423679FF24ACBBDE0048CD67 /* SceneDelegate.swift in Sources */,
 				42367A6824BB3BF10048CD67 /* SettingsHelper.swift in Sources */,
 				42367A2124AF8BD70048CD67 /* PostAnnotation.swift in Sources */,

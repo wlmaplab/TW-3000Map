@@ -21,7 +21,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     var closeAction : (() -> Void)?
     
     private let titles    = [ "本日三倍券尚有", "分局名稱", "門市地址", "電話", "營業時間",  "營業備註",  "異動時間" ]
-    private let itemKeys  = [ "total",    "storeNm", "addr",   "tel", "busiTime", "busiMemo", "updateTime" ]
+    private let itemKeys  = [ "total",       "storeNm", "addr",   "tel", "busiTime", "busiMemo", "updateTime" ]
     
     
     
@@ -219,6 +219,11 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
+            if userCoordinate.latitude == 0 || userCoordinate.longitude == 0 {
+                msgBox(title: "Error 訊息：", message: "無法確認當前位置，所以無法進行導航！")
+                return
+            }
+            
             let userPlacemark = MKPlacemark(coordinate: userCoordinate)
             let postPlacemark = MKPlacemark(coordinate: postCoordinate)
             
@@ -232,6 +237,16 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                                launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
             
         }
+    }
+    
+    
+    // MARK: - Tools
+    
+    func msgBox(title: String, message: String) {
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        controller.addAction(okAction)
+        present(controller, animated: true, completion: nil)
     }
     
 }
