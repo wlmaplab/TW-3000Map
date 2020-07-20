@@ -25,35 +25,28 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     var nearbyItems = Array<NearbyPost>()
     
     
-    // MARK: - items
-     
-    func items() -> Array<Dictionary<String,Any>>? {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.postItems
-    }
-    
     
     // MARK: - viewLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        searchNearbyItems()
+        searchNearbyItems(message: "搜尋附近的郵局...")
     }
     
     
     // MARK: - Search Nearby Posts
     
-    func searchNearbyItems() {
+    func searchNearbyItems(message: String) {
         guard let myLocation = self.myLocation else { return }
-        guard let items = self.items() else { return }
+        guard let items = AppVariables.items() else { return }
         
         if myLocation.latitude == 0 || myLocation.longitude == 0 {
             return
         }
         
         indicatorView.startAnimating()
-        self.title = "搜尋附近的郵局..."
+        self.title = message
         
         DispatchQueue.global().async {
             var postArray = Array<NearbyPost>()
@@ -104,12 +97,41 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
+    // MARK: - Notification
+    
+    func setupNotificationCenter() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(refreshTable(notification:)),
+                                               name: NSNotification.Name("UpdatedPostData") ,
+                                               object: nil)
+    }
+    
+    @objc func refreshTable(notification: NSNotification) {
+        searchNearbyItems(message: "刷新列表中...")
+        if AppVariables.opendPostDetailsStoreCd() != "" {
+            refreshOpendPostDetailsPage()
+        }
+    }
+    
+    func refreshOpendPostDetailsPage() {
+        guard let items = AppVariables.items() else { return }
+        
+        if let info = MyTools.searchPostInfoWith(storeCd: AppVariables.opendPostDetailsStoreCd(), from: items) {
+            NotificationCenter.default.post(name: Notification.Name("RefreshPostDetails"),
+                                            object: nil, userInfo: ["postInfo": info])
+        }
+    }
+    
+    
+    
     // MARK: - Setup
     
     func setup() {
+        self.title = "附近的郵局"
         setupLeftButtonItem()
         setupRightButtonItem()
         setupTableView()
+        setupNotificationCenter()
     }
     
     func setupLeftButtonItem() {
@@ -205,12 +227,12 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
         vc.postCoordinate = coordinate
         vc.info = info
         
-//        opendPostDetailsStoreCd = info["storeCd"] ?? ""
-//        weak var weakSelf = self
-//        vc.closeAction = {
-//            weakSelf?.opendPostDetailsStoreCd = ""
-//        }
+        let storeCd = (info["storeCd"] as? String) ?? ""
+        AppVariables.setOpendPostDetailsStoreCd(storeCd)
         
+        vc.closeAction = {
+            AppVariables.setOpendPostDetailsStoreCd("")
+        }
         present(vc, animated: true, completion: nil)
     }
     

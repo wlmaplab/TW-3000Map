@@ -69,8 +69,13 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     @objc func refreshInfo(notification: NSNotification) {
         if let postInfo = notification.userInfo?["postInfo"] as? Dictionary<String,Any> {
-            self.info = postInfo
-            self.tableView.reloadData()
+            let postStoreCd = (postInfo["storeCd"] as? String) ?? ""
+            let myStoreCd = (info?["storeCd"] as? String) ?? ""
+            
+            if postStoreCd != "" && postStoreCd == myStoreCd {
+                self.info = postInfo
+                self.tableView.reloadData()
+            }
         }
     }
     

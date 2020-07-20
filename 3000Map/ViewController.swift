@@ -27,7 +27,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var checkTimer : Timer?
     
     var postAnnotationArray = Array<PostAnnotation>()
-    var opendPostDetailsStoreCd : String = ""
+    //var opendPostDetailsStoreCd : String = ""
     
     
     // MARK: - Object
@@ -188,8 +188,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 print("\ndata count: \(array.count)")
                 AppVariables.setItems(array)
                 self.showMarkers()
+                self.sendUpdatedNotification()
                 
-                if self.opendPostDetailsStoreCd != "" {
+                if AppVariables.opendPostDetailsStoreCd() != "" {
                     self.refreshOpendPostDetailsPage()
                 }
             }
@@ -201,28 +202,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     
-    // MARK: - Refresh PostDetails Page
+    // MARK: - Send Refresh Notification
+    
+    func sendUpdatedNotification() {
+        NotificationCenter.default.post(name: Notification.Name("UpdatedPostData"), object: nil)
+    }
     
     func refreshOpendPostDetailsPage() {
-        if let info = searchPostInfoWith(storeCd: opendPostDetailsStoreCd) {
+        guard let items = AppVariables.items() else { return }
+        
+        if let info = MyTools.searchPostInfoWith(storeCd: AppVariables.opendPostDetailsStoreCd(), from: items) {
             NotificationCenter.default.post(name: Notification.Name("RefreshPostDetails"),
                                             object: nil, userInfo: ["postInfo": info])
         }
-    }
-    
-    func searchPostInfoWith(storeCd: String) -> Dictionary<String,Any>? {
-        if storeCd == "" {
-            return nil
-        }
-        
-        if let items = AppVariables.items() {
-            for item in items {
-                if let itemStoreCd = item["storeCd"] as? String, itemStoreCd == storeCd {
-                    return item
-                }
-            }
-        }
-        return nil
     }
     
     
@@ -401,11 +393,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
         vc.info = info
-        opendPostDetailsStoreCd = info["storeCd"] ?? ""
+        let storeCd = info["storeCd"] ?? ""
+        AppVariables.setOpendPostDetailsStoreCd(storeCd)
         
-        weak var weakSelf = self
         vc.closeAction = {
-            weakSelf?.opendPostDetailsStoreCd = ""
+            AppVariables.setOpendPostDetailsStoreCd("")
         }
         present(vc, animated: true, completion: nil)
     }
@@ -429,6 +421,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @objc func pressedNearbyButtonItem() {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NearbyPostsVC") as! NearbyPostsViewController
+        vc.myLocation = AppVariables.myLocation()
         show(vc, sender: self)
     }
     
