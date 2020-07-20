@@ -230,7 +230,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UITableView Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             let userCoordinate = AppVariables.myLocation()
             if userCoordinate.latitude == 0 || userCoordinate.longitude == 0 {
                 msgBox(title: "Error 訊息：", message: "無法確認當前位置，所以無法進行導航！")
