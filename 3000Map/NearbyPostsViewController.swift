@@ -19,6 +19,8 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBOutlet var tableView : UITableView!
     
+    var myLocation : CLLocationCoordinate2D?
+    
     let indicatorView = UIActivityIndicatorView(style: .medium)
     var nearbyItems = Array<NearbyPost>()
     
@@ -43,9 +45,9 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Search Nearby Posts
     
     func searchNearbyItems() {
+        guard let myLocation = self.myLocation else { return }
         guard let items = self.items() else { return }
         
-        let myLocation = AppVariables.myLocation()
         if myLocation.latitude == 0 || myLocation.longitude == 0 {
             return
         }
