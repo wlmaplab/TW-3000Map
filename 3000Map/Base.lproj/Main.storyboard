@@ -140,6 +140,31 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mapCell" rowHeight="184" id="fuE-Ga-tZM" customClass="MapTableViewCell" customModule="_000Map" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="88" width="414" height="184"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fuE-Ga-tZM" id="74M-hH-5aw">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="184"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="es5-gJ-Q6q">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="184"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="es5-gJ-Q6q" secondAttribute="height" multiplier="9:4" id="Eyu-ig-iUt"/>
+                                                    </constraints>
+                                                </mapView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="es5-gJ-Q6q" firstAttribute="top" secondItem="74M-hH-5aw" secondAttribute="top" id="7xl-RM-g6c"/>
+                                                <constraint firstAttribute="bottom" secondItem="es5-gJ-Q6q" secondAttribute="bottom" id="91K-VU-eXS"/>
+                                                <constraint firstAttribute="trailing" secondItem="es5-gJ-Q6q" secondAttribute="trailing" id="K44-Jz-2OM"/>
+                                                <constraint firstItem="es5-gJ-Q6q" firstAttribute="leading" secondItem="74M-hH-5aw" secondAttribute="leading" id="bZe-vI-wHf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="mapView" destination="es5-gJ-Q6q" id="WCz-u1-69t"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="71k-s1-ABY" id="lrb-fw-wGE"/>
@@ -165,7 +190,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CNB-Mv-EUC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1778" y="139"/>
+            <point key="canvasLocation" x="1776.8115942028987" y="138.61607142857142"/>
         </scene>
         <!--Nearby Posts View Controller-->
         <scene sceneID="qsG-eF-CfM">

@@ -226,6 +226,7 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
         vc.info = info
+        vc.isShowMap = true
         
         let storeCd = (info["storeCd"] as? String) ?? ""
         AppVariables.setOpendPostDetailsStoreCd(storeCd)

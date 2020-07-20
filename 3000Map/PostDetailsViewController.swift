@@ -14,6 +14,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet var closeButton : UIButton!
     @IBOutlet var tableView : UITableView!
     
+    var isShowMap = false
     var postCoordinate = CLLocationCoordinate2D()    
     var info : Dictionary<String,Any>?
     var closeAction : (() -> Void)?
@@ -152,14 +153,16 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UITableView DataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-       return 2
+       return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return titles.count
+            return isShowMap ? 1 : 0
         case 1:
+            return titles.count
+        case 2:
             return 1
         default:
             return 0
@@ -167,12 +170,23 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //============= Map Cell =============//
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "mapCell", for: indexPath) as! MapTableViewCell
+            let storeNm = (info?["storeNm"] as? String) ?? "郵局"
+            cell.moveToLocation(coordinate: postCoordinate, title: storeNm)
+            cell.selectionStyle = .none
+            return cell
+        }
+        
+        
+        //============= 一般的 Cell =============//
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
         cell.selectionStyle = .none
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.textAlignment = .left
     
-        if indexPath.section == 0 {
+        if indexPath.section == 1 {
             /*
             *  [0]  total       三倍券存量
             *  [1]  storeNm     分局名稱
@@ -202,14 +216,13 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
                 cell.textLabel?.attributedText = nil
                 cell.textLabel?.text = ""
             }
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 2 {
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.attributedText = routeNavigationAttributedString()
         } else {
             cell.textLabel?.attributedText = nil
             cell.textLabel?.text = ""
         }
-        
         return cell
     }
     
