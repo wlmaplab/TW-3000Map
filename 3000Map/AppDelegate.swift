@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var myLocation = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var postItems : Array<Dictionary<String,Any>>?
+    var opendPostDetailsStoreCd : String = ""
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

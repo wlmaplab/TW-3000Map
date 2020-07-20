@@ -37,4 +37,17 @@ class AppVariables {
         appDelegate.myLocation.longitude = longitude
     }
     
+    
+    // MARK: - opendPostDetailsStoreCd
+    
+    class func opendPostDetailsStoreCd() -> String {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.opendPostDetailsStoreCd
+    }
+    
+    class func setOpendPostDetailsStoreCd(_ storeCd: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.opendPostDetailsStoreCd = storeCd
+    }
+    
 }
