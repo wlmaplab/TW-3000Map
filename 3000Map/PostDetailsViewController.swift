@@ -129,6 +129,27 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         return attrStr
     }
     
+    func telephoneStringToAttributedString(title: String, tel: String) -> NSAttributedString {
+        let textStr = "\(title)\(tel) 📞☎️" as NSString
+        let attrStr = NSMutableAttributedString(string: textStr as String)
+        
+        attrStr.addAttribute(.foregroundColor,
+                             value: UIColor.black,
+                             range: NSRange(location: 0, length: textStr.length))
+        
+        attrStr.addAttribute(.font,
+                             value: UIFont.systemFont(ofSize: 17),
+                             range: NSRange(location: 0, length: textStr.length))
+        
+        attrStr.addAttribute(.font,
+                             value: UIFont.boldSystemFont(ofSize: 18),
+                             range: textStr.range(of: title))
+        
+        attrStr.addAttribute(.link, value: "tel://\(tel)", range: textStr.range(of: tel))
+        
+        return attrStr
+    }
+    
     func routeNavigationAttributedString() -> NSAttributedString {
         let appleMapStr = "Maps"
         let textStr = "使用 \(appleMapStr) 進行導航 🚴" as NSString
@@ -205,9 +226,12 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             case 0:
                 //三倍券存量
                 cell.textLabel?.attributedText = totalStringToAttributedString(title: title, total: content)
-            case 1, 2, 3, 6:
-                //分局名稱、門市地址、電話、異動時間
+            case 1, 2, 6:
+                //分局名稱、門市地址、異動時間
                 cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：", content: content)
+            case 3:
+                //電話
+                cell.textLabel?.attributedText = telephoneStringToAttributedString(title: "\(title)：", tel: content)
             case 4, 5:
                 //營業時間、營業備註
                 let contentText = content.replacingOccurrences(of: "<br>", with: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -230,27 +254,56 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UITableView Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 2 {
-            let userCoordinate = AppVariables.myLocation()
-            if userCoordinate.latitude == 0 || userCoordinate.longitude == 0 {
-                msgBox(title: "Error 訊息：", message: "無法確認當前位置，所以無法進行導航！")
-                return
+        switch indexPath.section {
+        case 1:
+            if indexPath.row == 3 {
+                openPhone()
             }
-            
-            let userPlacemark = MKPlacemark(coordinate: userCoordinate)
-            let postPlacemark = MKPlacemark(coordinate: postCoordinate)
-            
-            let userMapItem = MKMapItem(placemark: userPlacemark)
-            let postMapItem = MKMapItem(placemark: postPlacemark)
-            
-            userMapItem.name = "現在位置"
-            postMapItem.name = (info?["storeNm"] as? String) ?? "郵局"
-            
-            MKMapItem.openMaps(with: [userMapItem, postMapItem],
-                               launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
-            
+        case 2:
+            openAppleMaps()
+        default:
+            break
         }
     }
+    
+    func openPhone() {
+        guard let tel = info?["tel"] else { return }
+        let storeNm = (info?["storeNm"] as? String) ?? "郵局"
+        
+        let controller = UIAlertController(title: "要撥打電話到：\(storeNm) 嗎？", message: "電話號碼：\(tel)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "撥號", style: .destructive) { _ in
+            if let url = URL(string: "tel://\(tel)") {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        
+        controller.addAction(cancelAction)
+        controller.addAction(okAction)
+        
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func openAppleMaps() {
+        let userCoordinate = AppVariables.myLocation()
+        if userCoordinate.latitude == 0 || userCoordinate.longitude == 0 {
+            msgBox(title: "Error 訊息：", message: "無法確認當前位置，所以無法進行導航！")
+            return
+        }
+        
+        let userPlacemark = MKPlacemark(coordinate: userCoordinate)
+        let postPlacemark = MKPlacemark(coordinate: postCoordinate)
+        
+        let userMapItem = MKMapItem(placemark: userPlacemark)
+        let postMapItem = MKMapItem(placemark: postPlacemark)
+        
+        userMapItem.name = "現在位置"
+        postMapItem.name = (info?["storeNm"] as? String) ?? "郵局"
+        
+        MKMapItem.openMaps(with: [userMapItem, postMapItem],
+                           launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+    }
+    
     
     
     // MARK: - Tools
