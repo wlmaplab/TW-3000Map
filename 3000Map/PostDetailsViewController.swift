@@ -20,7 +20,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     var closeAction : (() -> Void)?
     
     private let titles    = [ "本日三倍券尚有", "分局名稱", "門市地址", "電話", "營業時間",  "營業備註",  "異動時間" ]
-    private let itemKeys  = [ "total",       "storeNm", "addr",   "tel", "busiTime", "busiMemo", "updateTime" ]
+    //private let itemKeys  = [ "total",       "storeNm", "addr",   "tel", "busiTime", "busiMemo", "updateTime" ]
     
     
     
@@ -218,25 +218,39 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             *  [6]  updateTime  異動時間
             */
             
-            let title   = titles[indexPath.row]
-            let key     = itemKeys[indexPath.row]
-            let content = getInfoValue(key: key)
-            
+            let title = titles[indexPath.row]
             
             switch indexPath.row {
             case 0:
-                //三倍券存量
-                cell.textLabel?.attributedText = totalStringToAttributedString(title: title, total: content)
-            case 1, 2, 6:
-                //分局名稱、門市地址、異動時間
-                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：", content: content)
+                //三倍券存量 total
+                cell.textLabel?.attributedText = totalStringToAttributedString(title: title,
+                                                                               total: info?.total ?? "")
+            case 1:
+                //分局名稱 storeNm
+                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：",
+                                                                              content: info?.storeNm ?? "")
+            case 2:
+                //門市地址 addr
+                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：",
+                                                                              content: info?.addr ?? "")
             case 3:
-                //電話
-                cell.textLabel?.attributedText = telephoneStringToAttributedString(title: "\(title)：", tel: content)
-            case 4, 5:
-                //營業時間、營業備註
-                let contentText = content.replacingOccurrences(of: "<br>", with: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
-                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：", content: contentText)
+                //電話 tel
+                cell.textLabel?.attributedText = telephoneStringToAttributedString(title: "\(title)：",
+                                                                                   tel: info?.tel ?? "")
+            case 4:
+                //營業時間 busiTime
+                let content = info?.busiTime ?? ""
+                let busiTime = content.replacingOccurrences(of: "<br>", with: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：", content: busiTime)
+            case 5:
+                //營業備註 busiMemo
+                let content = info?.busiMemo ?? ""
+                let busiMemo = content.replacingOccurrences(of: "<br>", with: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：", content: busiMemo)
+            case 6:
+                //異動時間 updateTime
+                cell.textLabel?.attributedText = itemStringToAttributedString(title: "\(title)：",
+                                                                              content: info?.updateTime ?? "")
             default:
                 cell.textLabel?.attributedText = nil
                 cell.textLabel?.text = ""
@@ -252,8 +266,9 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    // MARK: - Get Info Value (using Mirror)
+    // MARK: - Get Info Value (using Mirror) (X)
     
+    /*
     func getInfoValue(key: String) -> String {
         if let info = self.info {
             let mirror = Mirror(reflecting: info)
@@ -265,7 +280,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
         return ""
-    }
+    }*/
     
     
     // MARK: - UITableView Delegate
