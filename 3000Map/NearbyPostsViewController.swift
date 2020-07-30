@@ -14,7 +14,7 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     struct NearbyPost {
         let distance : CLLocationDistance
         let coordinate : CLLocationCoordinate2D
-        let info : Dictionary<String,Any>
+        let info : PostItem
     }
     
     @IBOutlet var tableView : UITableView!
@@ -54,11 +54,11 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
                 var latitude : Double = 0
                 var longitude : Double = 0
                 
-                if let latStr = item["latitude"] as? String {
+                if let latStr = item.latitude {
                     let lat = latStr.trimmingCharacters(in: .whitespacesAndNewlines)
                     latitude = Double(lat) ?? 0
                 }
-                if let lngStr = item["longitude"] as? String {
+                if let lngStr = item.longitude {
                     let lng = lngStr.trimmingCharacters(in: .whitespacesAndNewlines)
                     longitude = Double(lng) ?? 0
                 }
@@ -187,9 +187,9 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
         let info = post.info
         //let distance = Int(post.distance)
         
-        let storeNm = (info["storeNm"] as? String) ?? ""  //分局名稱
-        let addr    = (info["addr"] as? String) ?? ""     //門市地址
-        let total   = (info["total"] as? String) ?? ""    //服務存量
+        let storeNm = info.storeNm ?? ""  //分局名稱
+        let addr    = info.addr ?? ""     //門市地址
+        let total   = info.total ?? ""    //服務存量
         
         cell.textLabel?.text = storeNm
         cell.detailTextLabel?.text = "\(addr)"
@@ -222,13 +222,13 @@ class NearbyPostsViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Show More Info
     
-    func showMoreInfo(_ info: Dictionary<String,Any>, coordinate: CLLocationCoordinate2D) {
+    func showMoreInfo(_ info: PostItem, coordinate: CLLocationCoordinate2D) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
         vc.info = info
         vc.isShowMap = true
         
-        let storeCd = (info["storeCd"] as? String) ?? ""
+        let storeCd = info.storeCd ?? ""
         AppVariables.setOpendPostDetailsStoreCd(storeCd)
         
         vc.closeAction = {

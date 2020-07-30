@@ -14,7 +14,7 @@ import CoreLocation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var myLocation = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-    var postItems : Array<Dictionary<String,Any>>?
+    var postItems : Array<PostItem>?
     var opendPostDetailsStoreCd : String = ""
     
 

@@ -11,22 +11,10 @@ import MapKit
 
 class PostAnnotationView: MKAnnotationView {
     var coordinate : CLLocationCoordinate2D  //座標
-    var hsnCd      = ""                      //縣市代號
-    var townCd     = ""                      //鄉鎮區代號
-    var storeCd    = ""                      //分局代號
-    var hsnNm      = ""                      //縣市名稱
-    var townNm     = ""                      //鄉鎮區名稱
-    var storeNm    = ""                      //分局名稱
-    var addr       = ""                      //門市地址
-    var zipCd      = ""                      //郵遞區號
-    var tel        = ""                      //電話
-    var busiTime   = ""                      //營業時間
-    var busiMemo   = ""                      //營業備註
-    var total      = ""                      //服務存量
-    var updateTime = ""                      //異動時間
+    var info : PostItem?
     
     var selectedAction : ((_ coordinate: CLLocationCoordinate2D) -> Void)?
-    var showMoreAction : ((_ info: Dictionary<String,String>, _ coordinate: CLLocationCoordinate2D) -> Void)?
+    var showMoreAction : ((_ info: PostItem?, _ coordinate: CLLocationCoordinate2D) -> Void)?
     
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
@@ -93,9 +81,9 @@ class PostAnnotationView: MKAnnotationView {
             textView.isSelectable = false
             textView.backgroundColor = .clear //.lightGray
             
-            let totalText = "\(total) 份"
+            let totalText = "\(info?.total ?? "--") 份"
             let vouchers = "三倍券尚有: \(totalText)"
-            let infoText = "\(vouchers)\n\(storeNm)\n\(addr)\n" as NSString
+            let infoText = "\(vouchers)\n\(info?.storeNm ?? "")\n\(info?.addr ?? "")\n" as NSString
             let attrStr = NSMutableAttributedString(string: infoText as String)
             
             // infoText attribute
@@ -122,27 +110,32 @@ class PostAnnotationView: MKAnnotationView {
                                  value: UIFont.boldSystemFont(ofSize: 23),
                                  range: infoText.range(of: vouchers))
             
-            let totalFontColor = LevelsColor.fontColorWith(total: Int(total) ?? 0)
+            let totalFontColor = LevelsColor.fontColorWith(total: Int(info?.total ?? "") ?? 0)
             attrStr.addAttribute(.foregroundColor,
                                  value: totalFontColor,
                                  range: infoText.range(of: totalText))
             
             // 分局名稱 attribute
-            let storeNmStyle = NSMutableParagraphStyle()
-            storeNmStyle.lineSpacing = 3
-            storeNmStyle.paragraphSpacing = 10
+            if let storeNm = info?.storeNm {
+                let storeNmStyle = NSMutableParagraphStyle()
+                storeNmStyle.lineSpacing = 3
+                storeNmStyle.paragraphSpacing = 10
             
-            attrStr.addAttribute(.paragraphStyle,
-                                 value: storeNmStyle,
-                                 range: infoText.range(of: storeNm))
-            attrStr.addAttribute(.font,
-                                 value: UIFont.boldSystemFont(ofSize: 17),
-                                 range: infoText.range(of: storeNm))
+                attrStr.addAttribute(.paragraphStyle,
+                                     value: storeNmStyle,
+                                     range: infoText.range(of: storeNm))
+                attrStr.addAttribute(.font,
+                                     value: UIFont.boldSystemFont(ofSize: 17),
+                                     range: infoText.range(of: storeNm))
+            }
             
             // 門市地址 attribute
-            attrStr.addAttribute(.foregroundColor,
-                                 value: UIColor.darkGray,
-                                 range: infoText.range(of: addr))
+            if let addr = info?.addr {
+                attrStr.addAttribute(.foregroundColor,
+                                     value: UIColor.darkGray,
+                                     range: infoText.range(of: addr))
+            }
+            
             
             textView.attributedText = attrStr;
             bgView.addSubview(textView)
@@ -160,7 +153,6 @@ class PostAnnotationView: MKAnnotationView {
             showMoreLabel.textColor = .systemBlue
             showMoreLabel.font = UIFont.boldSystemFont(ofSize: 17)
             showMoreLabel.isUserInteractionEnabled = true
-            //showMoreLabel.backgroundColor = .green
             bgView.addSubview(showMoreLabel)
             
             let showMoreTap = UITapGestureRecognizer(target: self, action: #selector(clickShowMore))
@@ -180,12 +172,6 @@ class PostAnnotationView: MKAnnotationView {
     }
     
     @objc func clickShowMore() {
-        let info = ["hsnCd": hsnCd, "townCd": townCd, "storeCd": storeCd,
-                    "hsnNm": hsnNm, "townNm": townNm, "storeNm": storeNm,
-                    "addr": addr, "zipCd": zipCd, "tel": tel,
-                    "busiTime": busiTime, "busiMemo": busiMemo,
-                    "total": total, "updateTime": updateTime]
-        
         if let action = showMoreAction {
             action(info, coordinate)
         }

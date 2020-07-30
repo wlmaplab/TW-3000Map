@@ -27,7 +27,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var checkTimer : Timer?
     
     var postAnnotationArray = Array<PostAnnotation>()
-    //var opendPostDetailsStoreCd : String = ""
     
     
     // MARK: - Object
@@ -237,11 +236,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 var latitude : Double = 0
                 var longitude : Double = 0
                 
-                if let latStr = item["latitude"] as? String {
+                if let latStr = item.latitude {
                     let lat = latStr.trimmingCharacters(in: .whitespacesAndNewlines)
                     latitude = Double(lat) ?? 0
                 }
-                if let lngStr = item["longitude"] as? String {
+                if let lngStr = item.longitude {
                     let lng = lngStr.trimmingCharacters(in: .whitespacesAndNewlines)
                     longitude = Double(lng) ?? 0
                 }
@@ -253,21 +252,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                 let anno = PostAnnotation(coordinate: coordinate)
                 
-                anno.image = postPinImageWith(totalString: item["total"] as? String)
-                
-                anno.hsnCd      = (item["hsnCd"] as? String) ?? ""
-                anno.townCd     = (item["townCd"] as? String) ?? ""
-                anno.storeCd    = (item["storeCd"] as? String) ?? ""
-                anno.hsnNm      = (item["hsnNm"] as? String) ?? ""
-                anno.townNm     = (item["townNm"] as? String) ?? ""
-                anno.storeNm    = (item["storeNm"] as? String) ?? ""
-                anno.addr       = (item["addr"] as? String) ?? ""
-                anno.zipCd      = (item["zipCd"] as? String) ?? ""
-                anno.tel        = (item["tel"] as? String) ?? ""
-                anno.busiTime   = (item["busiTime"] as? String) ?? ""
-                anno.busiMemo   = (item["busiMemo"] as? String) ?? ""
-                anno.total      = (item["total"] as? String) ?? ""
-                anno.updateTime = (item["updateTime"] as? String) ?? ""
+                anno.image = postPinImageWith(totalString: item.total)
+                anno.info = item
                 
                 tmpArray.append(anno)
             }
@@ -348,19 +334,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             
             annoView?.image = anno.image
             annoView?.coordinate = anno.coordinate
-            annoView?.hsnCd      = anno.hsnCd
-            annoView?.townCd     = anno.townCd
-            annoView?.storeCd    = anno.storeCd
-            annoView?.hsnNm      = anno.hsnNm
-            annoView?.townNm     = anno.townNm
-            annoView?.storeNm    = anno.storeNm
-            annoView?.addr       = anno.addr
-            annoView?.zipCd      = anno.zipCd
-            annoView?.tel        = anno.tel
-            annoView?.busiTime   = anno.busiTime
-            annoView?.busiMemo   = anno.busiMemo
-            annoView?.total      = anno.total
-            annoView?.updateTime = anno.updateTime
+            annoView?.info = anno.info
             
             weak var weakSelf = self
             
@@ -389,11 +363,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.setRegion(adjustedRegion, animated: true)
     }
     
-    func showMoreInfo(_ info: Dictionary<String,String>, coordinate: CLLocationCoordinate2D) {
+    func showMoreInfo(_ info: PostItem?, coordinate: CLLocationCoordinate2D) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "PostDetailsVC") as! PostDetailsViewController
         vc.postCoordinate = coordinate
         vc.info = info
-        let storeCd = info["storeCd"] ?? ""
+        let storeCd = info?.storeCd ?? ""
         AppVariables.setOpendPostDetailsStoreCd(storeCd)
         
         vc.closeAction = {

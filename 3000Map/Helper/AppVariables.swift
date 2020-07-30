@@ -13,12 +13,12 @@ class AppVariables {
     
     // MARK: - items
      
-    class func items() -> Array<Dictionary<String,Any>>? {
+    class func items() -> Array<PostItem>? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.postItems
     }
     
-    class func setItems(_ items: Array<Dictionary<String,Any>>?) {
+    class func setItems(_ items: Array<PostItem>?) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.postItems = items
     }

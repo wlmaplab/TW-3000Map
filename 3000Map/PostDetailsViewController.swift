@@ -16,7 +16,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     
     var isShowMap = false
     var postCoordinate = CLLocationCoordinate2D()    
-    var info : Dictionary<String,Any>?
+    var info : PostItem?
     var closeAction : (() -> Void)?
     
     private let titles    = [ "本日三倍券尚有", "分局名稱", "門市地址", "電話", "營業時間",  "營業備註",  "異動時間" ]
@@ -69,9 +69,9 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @objc func refreshInfo(notification: NSNotification) {
-        if let postInfo = notification.userInfo?["postInfo"] as? Dictionary<String,Any> {
-            let postStoreCd = (postInfo["storeCd"] as? String) ?? ""
-            let myStoreCd = (info?["storeCd"] as? String) ?? ""
+        if let postInfo = notification.userInfo?["postInfo"] as? PostItem {
+            let postStoreCd = postInfo.storeCd ?? ""
+            let myStoreCd = info?.storeCd ?? ""
             
             if postStoreCd != "" && postStoreCd == myStoreCd {
                 self.info = postInfo
@@ -194,7 +194,7 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         //============= Map Cell =============//
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "mapCell", for: indexPath) as! MapTableViewCell
-            let storeNm = (info?["storeNm"] as? String) ?? "郵局"
+            let storeNm = info?.storeNm ?? "郵局"
             cell.moveToLocation(coordinate: postCoordinate, title: storeNm)
             cell.selectionStyle = .none
             return cell
@@ -220,7 +220,8 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
             
             let title   = titles[indexPath.row]
             let key     = itemKeys[indexPath.row]
-            let content = (info?[key] as? String) ?? ""
+            let content = getInfoValue(key: key)
+            
             
             switch indexPath.row {
             case 0:
@@ -251,6 +252,22 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
+    // MARK: - Get Info Value (using Mirror)
+    
+    func getInfoValue(key: String) -> String {
+        if let info = self.info {
+            let mirror = Mirror(reflecting: info)
+            for property in mirror.children {
+                //print("\(property.label!): \(property.value)")
+                if let label = property.label, label == key {
+                    return (property.value as? String) ?? ""
+                }
+            }
+        }
+        return ""
+    }
+    
+    
     // MARK: - UITableView Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -266,9 +283,11 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    // MARK: - Open Phone or AppleMaps
+    
     func openPhone() {
-        guard let tel = info?["tel"] else { return }
-        let storeNm = (info?["storeNm"] as? String) ?? "郵局"
+        guard let tel = info?.tel else { return }
+        let storeNm = info?.storeNm ?? "郵局"
         
         let controller = UIAlertController(title: "要撥打電話到：\(storeNm) 嗎？", message: "電話號碼：\(tel)", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "撥號", style: .destructive) { _ in
@@ -298,12 +317,11 @@ class PostDetailsViewController: UIViewController, UITableViewDataSource, UITabl
         let postMapItem = MKMapItem(placemark: postPlacemark)
         
         userMapItem.name = "現在位置"
-        postMapItem.name = (info?["storeNm"] as? String) ?? "郵局"
+        postMapItem.name = info?.storeNm ?? "郵局"
         
         MKMapItem.openMaps(with: [userMapItem, postMapItem],
                            launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
-    
     
     
     // MARK: - Tools

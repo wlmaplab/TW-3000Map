@@ -10,11 +10,11 @@ import Foundation
 
 class MyTools {
     
-    class func searchPostInfoWith(storeCd: String, from postItems: Array<Dictionary<String,Any>>) -> Dictionary<String,Any>? {
+    class func searchPostInfoWith(storeCd: String, from postItems: Array<PostItem>) -> PostItem? {
         if storeCd == "" { return nil }
         
         for item in postItems {
-            if let itemStoreCd = item["storeCd"] as? String, itemStoreCd == storeCd {
+            if let itemStoreCd = item.storeCd, itemStoreCd == storeCd {
                 return item
             }
         }
